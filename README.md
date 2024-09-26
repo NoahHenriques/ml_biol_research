@@ -1,2 +1,2 @@
 # ml_biol_research
-These files hold all relevant files for my Biology Independent Research that determines whether machine learning models perform better at predicting population growth than current models
+This repository holds all relevant files for my Biology Independent Research that predicts population growth of a species, and determines which traits were most likely to contribute to that outcome
