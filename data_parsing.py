@@ -6,6 +6,9 @@ import numpy as np
 pop_data = pd.read_csv("/Users/noahh/Downloads/doi_10_5061_dryad_cf78420__v20190625/Dryad_butterfly_trends/data/allpops.csv")
 #Species' trait data to be encoded
 trait_data = pd.read_csv("/Users/noahh/Downloads/doi_10_5061_dryad_cf78420__v20190625/Dryad_butterfly_trends/data/speciestraits.csv")
+site_data = pd.read_csv("/Users/noahh/Downloads/doi_10_5061_dryad_cf78420__v20190625/Dryad_butterfly_trends/data/dailyDD2016.csv")
+
+#--------Growth Rate Calculation
 
 # Averaging the Index values for each SiteID, CommonName, and Year
 # This is because there are two analysis methods used - ukbms and gampred
@@ -14,6 +17,8 @@ pop_data_unique_change = pop_data_unique = pop_data.groupby(['SiteID', 'CommonNa
 #Calculate the percent change (growth rate) for each group
 pop_data_unique_change['GrowthRate'] = pop_data_unique.groupby(['SiteID', 'CommonName'])['Index'].pct_change()
 pop_data_unique_change = pop_data_unique_change.dropna(subset=['GrowthRate'])
+
+#--------Merge Species Traits with Pop Data
 
 #Sort the data by SiteID, CommonName, and Year and drop Index
 pop_data_unique_change = pop_data_unique_change.sort_values(by=['CommonName', 'SiteID', 'Year'])
@@ -26,6 +31,11 @@ species_traits_df.drop(["CombinedLatin", "N", "Total", "estimate", "std.error", 
 # Merge the dataframes on 'CommonName'
 data = pd.merge(pop_data_unique_change, species_traits_df, on='CommonName', how='inner')
 
+#--------Merge Site Data
+
+
+#--------Find only the most prevalent species-year pairs
+
 # Count unique species-year pairs per site with updated method to avoid warning
 unique_species_year_pairs_per_site = (
     data.groupby('SiteID')
@@ -36,8 +46,9 @@ unique_species_year_pairs_per_site.columns = ['SiteID', 'UniqueSpeciesYearPairs'
 
 # Filter for sites with more than 500 unique species-year pairs
 sites_over_500 = unique_species_year_pairs_per_site[unique_species_year_pairs_per_site['UniqueSpeciesYearPairs'] > 500]['SiteID']
-
 processed_data = data_filtered = data[data['SiteID'].isin(sites_over_500)]
+
+#--------Encode Categorical Variables and Clean Data
 
 # Encode categorical variables
 encode = ['HostCategory', 'ResStatus', 'WinterStage']

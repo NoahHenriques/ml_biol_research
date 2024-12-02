@@ -7,7 +7,6 @@ data = pd.read_csv("population_growth.csv")
 X = data['CommonName']
 y = data['GrowthRate']
 
-# Plot a boxplot to show the distribution of growth rates by species
 data.boxplot(column='GrowthRate', by='CommonName', grid=False, vert=False)
 
 # Set title and labels for the plot

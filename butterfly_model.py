@@ -30,11 +30,18 @@ t2_sites = population_growth_df[population_growth_df['SiteID'].isin(sites_under_
 site_2 = t1_sites[t1_sites['SiteID'] == 2]
 
 # Separate features and target variable
+# 'WinterStage', 'ResStatus', 'Hostplant_Specialism_Score', 'HostCategory', 'Voltinism', 'WingSize_meanFemale', 'Wetland', 'Disturbed'
 X = site_2[['Year', 'WinterStage', 'ResStatus', 'Hostplant_Specialism_Score', 'HostCategory', 'Voltinism', 'WingSize_meanFemale', 'Wetland', 'Disturbed']]
 y = site_2['GrowthRate']
 
-# Impute missing values in 'meanLL' using median strategy
+# Impute missing values in 'meanLL' using median
 imputer = SimpleImputer(strategy='median')
+"""
+, 'WinterStage', 'ResStatus', 
+                                                          'Hostplant_Specialism_Score', 'HostCategory', 
+                                                          'Voltinism', 'WingSize_meanFemale', 
+                                                          'Wetland', 'Disturbed'
+"""
 X = pd.DataFrame(imputer.fit_transform(X), columns=site_2[['Year', 'WinterStage', 'ResStatus', 
                                                           'Hostplant_Specialism_Score', 'HostCategory', 
                                                           'Voltinism', 'WingSize_meanFemale', 
